@@ -1,135 +1,94 @@
-export const homePrograms = [
+export interface ProgramTier {
+  name: string;
+  tagline: string;
+  description: string;
+  startsFrom: string;
+  features: string[];
+}
+
+export interface ClassEcosystem {
+  id: string;
+  label: string;
+  range: string;
+  programs: ProgramTier[];
+}
+
+export const classEcosystemData: ClassEcosystem[] = [
   {
-    id: 1,
-    category: "Classes 1–5",
-    title: "Foundation Builder",
-    description:
-      "Strong academic foundation with personal attention and structured learning support.",
-
-    subjects: [
-      "Mathematics",
-      "English",
-      "Science",
-      "Tamil",
-    ],
-
-    onlinePrice: "₹5,500",
-    homePrice: "₹8,000",
-
-    duration: "Starts from 3 Months",
-
-    features: [
-      "Weekly Parent Reports",
-      "Daily Study Monitoring",
-      "1:1 Mentorship",
-      "Concept Clarity Sessions",
-    ],
+    id: "primary",
+    label: "Classes 1–5",
+    range: "Primary Foundation",
+    programs: [
+      {
+        name: "Academic Excellence Foundation",
+        tagline: "Cognitive Skill & Habit Mapping",
+        description: "Personalized 1-on-1 mentorship focused on developing intuitive mathematical skills, reading comprehension, and early critical logic structures.",
+        startsFrom: "₹2,499/month",
+        features: ["1-on-1 Personalized Mapping", "Mental Math Modules", "Weekly Progress Trackers"]
+      }
+    ]
   },
-
   {
-    id: 2,
-    category: "Classes 6–8",
-    title: "Dual Subject Program",
-
-    description:
-      "Focused academic improvement program designed for middle school students.",
-
-    subjects: [
-      "Mathematics",
-      "Science",
-    ],
-
-    onlinePrice: "₹8,500",
-    homePrice: "₹12,500",
-
-    duration: "Starts from 3 Months",
-
-    features: [
-      "Performance Tracking",
-      "Homework Guidance",
-      "Progress Analysis",
-      "Study Discipline Support",
-    ],
+    id: "middle",
+    label: "Classes 6–8",
+    range: "Middle School Core",
+    programs: [
+      {
+        name: "Academic Excellence Core",
+        tagline: "School Curriculum Mastery",
+        description: "Rigorous 1-on-1 specialized support targeting school curricula while building foundational confidence for higher academic tracks.",
+        startsFrom: "₹3,999/month",
+        features: ["Subject-Matter Specialists", "School Rank Optimizers", "Customized Learning Paths"]
+      },
+      {
+        name: "VECTOR™ Pre-Foundation",
+        tagline: "Early IIT-JEE / NEET Primer",
+        description: "Introduces advanced logical reasoning, mathematical pattern analysis, and core science concepts to give students an early competitive edge.",
+        startsFrom: "₹5,499/month",
+        features: ["Olympiad Training Formats", "Advanced Analytical Logic", "Weekly Mentorship Strategy"]
+      }
+    ]
   },
-
   {
-    id: 3,
-    category: "Classes 9–10",
-    title: "Board Success Program",
-
-    description:
-      "Board exam focused mentorship program with high-performance academic tracking.",
-
-    subjects: [
-      "Mathematics",
-      "Science",
-      "English",
-    ],
-
-    onlinePrice: "₹12,000",
-    homePrice: "₹18,000",
-
-    duration: "Starts from 3 Months",
-
-    features: [
-      "Board Exam Preparation",
-      "Test Series",
-      "Revision Strategy",
-      "Mentor Monitoring",
-    ],
+    id: "high",
+    label: "Classes 9–10",
+    range: "High School Milestone",
+    programs: [
+      {
+        name: "Board Dominance System",
+        tagline: "Rank Strategy & Concept Mastery",
+        description: "Strategic curriculum compression designed to maximize board exam scoring capabilities while building core analytical problem-solving speeds.",
+        startsFrom: "₹5,499/month",
+        features: ["Board Pattern Mock Frameworks", "Answer Script Engineering", "24/7 Priority Mentor Desk"]
+      },
+      {
+        name: "VECTOR™ Foundation",
+        tagline: "Integrated Competitive Strategy",
+        description: "Deep, structural concept building matching national competitive matrices. Designed to bridge the massive academic gap between Class 10 and Class 11.",
+        startsFrom: "₹7,999/month",
+        features: ["Advanced Physics & Math Modules", "Numerical Speed Drills", "Targeted Rank Architecture"]
+      }
+    ]
   },
-
   {
-    id: 4,
-    category: "Classes 11–12",
-    title: "PCM Package",
-
-    description:
-      "Advanced science mentorship for students targeting top academic performance.",
-
-    subjects: [
-      "Physics",
-      "Chemistry",
-      "Mathematics",
-    ],
-
-    onlinePrice: "₹18,000",
-    homePrice: "₹28,000",
-
-    duration: "Starts from 3 Months",
-
-    features: [
-      "Advanced Concept Coaching",
-      "Weekly Assessments",
-      "Competitive Preparation",
-      "Academic Strategy Support",
-    ],
-  },
-
-  {
-    id: 5,
-    category: "Classes 11–12",
-    title: "Commerce Success Program",
-
-    description:
-      "Comprehensive commerce mentorship with exam-focused preparation.",
-
-    subjects: [
-      "Accountancy",
-      "Economics",
-      "Business Studies",
-    ],
-
-    onlinePrice: "₹15,000",
-    homePrice: "₹24,000",
-
-    duration: "Starts from 3 Months",
-
-    features: [
-      "Commerce Expert Tutors",
-      "Structured Revision",
-      "Progress Reviews",
-      "Exam Preparation Support",
-    ],
-  },
-]
+    id: "senior",
+    label: "Classes 11–12",
+    range: "Senior Secondary Elite",
+    programs: [
+      {
+        name: "Board Excellence Track",
+        tagline: "Stream-Specific Specialized Tutoring",
+        description: "Deep content deep-dives in Physics, Chemistry, Math, or Biology explicitly designed to secure premium scores in national board frameworks.",
+        startsFrom: "₹6,999/month",
+        features: ["Advanced Conceptual Mapping", "Derivation & Numericals Drills", "Past 10-Year Trend Analysis"]
+      },
+      {
+        name: "UPED VECTOR™ JEE",
+        tagline: "Advanced Competitive Engineering",
+        description: "Our elite, signature 5-stage milestone progression framework built for ambitious minds aiming for top ranks in IIT-JEE Main & Advanced.",
+        startsFrom: "₹11,999/month",
+        features: ["Elite Rank-Mapping Engine", "Advanced Micro-Syllabus Tracking", "1-on-1 Personal Strategy Guide"]
+      }
+    ]
+  }
+];
