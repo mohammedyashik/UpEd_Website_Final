@@ -9,10 +9,9 @@ import {
 } from "lucide-react"
 import Navbar from "@/components/shared/Navbar"
 import Footer from "@/components/shared/Footer"
-
-// Native Firebase pipelines
-import { submitContactPageForm } from "@/services/leads"
-import { sendEmailNotification } from "@/services/notify"
+// Firebase pipeline
+import { submitClassSixLead } from "@/services/leads" 
+import { sendEmailNotification } from "@/services/notify" // Matches your actual file path
 
 const fadeInUpVariant: Variants = {
   hidden: { opacity: 0, y: 20 },
@@ -63,34 +62,28 @@ export default function ClassSixLanding() {
       setLoading(true)
       const currentPlanDetails = pricingData[activeMode].find(p => p.plan === selectedPlan)
 
+      // Payload strictly matches ClassSixLeadData interface
       const payloadData = {
         parentName: parentName.trim() || "Class 6 Lead",
         phone: phone.trim(),
-        studentName: "Not Provided (Class VI Dedicated Hub)",
         studentClass: "Class 6",
         subjectsRequired: `${currentPlanDetails?.subjects} (${currentPlanDetails?.classes})`,
         learningMode: activeMode === 'online' ? 'Class 6 Online Tuition' : 'Class 6 Home Tuition',
-        academicGoals: `Selected Plan: ${selectedPlan} (${currentPlanDetails?.fee}/month)`,
+        selectedPlan: selectedPlan, // REQUIRED
         sourcePage: `${rawPath} [Hero Intake]`,
       }
 
-      await submitContactPageForm(payloadData)
+      await submitClassSixLead(payloadData)
       await sendEmailNotification({
         formType: "Class 6 Academic Growth Consultation Request",
-        ...payloadData
+        parentName: payloadData.parentName,
+        phone: payloadData.phone,
+        sourcePage: payloadData.sourcePage
       })
 
       setSubmitSuccess(true)
-      setTimeout(() => {
-        setSubmitSuccess(false)
-        setParentName("")
-        setPhone("")
-      }, 4000)
-    } catch (err) {
-      console.error(err)
-    } finally {
-      setLoading(false)
-    }
+      setTimeout(() => { setSubmitSuccess(false); setParentName(""); setPhone(""); }, 4000)
+    } catch (err) { console.error(err) } finally { setLoading(false) }
   }
 
   const handleModalPipelineSubmit = async (e: React.FormEvent) => {
@@ -101,35 +94,28 @@ export default function ClassSixLanding() {
       setModalLoading(true)
       const currentPlanDetails = pricingData[activeMode].find(p => p.plan === selectedPlan)
 
+      // Payload strictly matches ClassSixLeadData interface
       const payloadData = {
         parentName: modalParentName.trim() || "Class 6 Pricing Lead",
         phone: modalPhone.trim(),
-        studentName: "Not Provided (Class VI Direct Select Funnel)",
         studentClass: "Class 6",
         subjectsRequired: `${currentPlanDetails?.subjects} (${currentPlanDetails?.classes})`,
         learningMode: activeMode === 'online' ? 'Class 6 Online Tuition' : 'Class 6 Home Tuition',
-        academicGoals: `Direct Selection: ${selectedPlan} (${currentPlanDetails?.fee}/month)`,
+        selectedPlan: selectedPlan, // REQUIRED
         sourcePage: `${rawPath} [Direct Grid Capture]`,
       }
 
-      await submitContactPageForm(payloadData)
+      await submitClassSixLead(payloadData)
       await sendEmailNotification({
         formType: "Class 6 Package Explicit Selection Intent",
-        ...payloadData
+        parentName: payloadData.parentName,
+        phone: payloadData.phone,
+        sourcePage: payloadData.sourcePage
       })
 
       setModalSuccess(true)
-      setTimeout(() => {
-        setModalSuccess(false)
-        setIsModalOpen(false)
-        setModalParentName("")
-        setModalPhone("")
-      }, 3500)
-    } catch (err) {
-      console.error(err)
-    } finally {
-      setModalLoading(false)
-    }
+      setTimeout(() => { setModalSuccess(false); setIsModalOpen(false); setModalParentName(""); setModalPhone(""); }, 3500)
+    } catch (err) { console.error(err) } finally { setModalLoading(false) }
   }
 
   return (

@@ -142,3 +142,31 @@ export async function submitContactPageForm(data: ContactPageLeadData) {
     throw error;
   }
 }
+
+// Add this interface to your service file
+export interface ClassSixLeadData {
+  parentName: string;
+  phone: string;
+  studentName?: string; // Added to match payload
+  studentClass: string;
+  subjectsRequired?: string;
+  learningMode: string;
+  academicGoals?: string; // Added to match payload
+  selectedPlan: string;
+  sourcePage: string;
+}
+
+// Add this function to your service file
+export async function submitClassSixLead(data: ClassSixLeadData) {
+  try {
+    const targetCollection = collection(db, "class-6-leads");
+    const docRef = await addDoc(targetCollection, {
+      ...data,
+      timestamp: serverTimestamp(),
+    });
+    return { success: true, id: docRef.id };
+  } catch (error) {
+    console.error("Firestore class-6-leads insertion error:", error);
+    throw error;
+  }
+}
