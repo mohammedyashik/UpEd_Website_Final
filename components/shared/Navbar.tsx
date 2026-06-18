@@ -41,8 +41,9 @@ export default function Navbar() {
                 onMouseLeave={() => setDesktopDropdownOpen(false)}
                 className="absolute top-full left-0 w-80 mt-2 bg-[#0A0A0A] border border-white/10 rounded-2xl p-4 shadow-2xl grid gap-2 z-50"
               >
+                {/* DYNAMIC REDIRECT BACK TO YOUR LIVE JOURNEY WORKSPACE */}
                 <Link 
-                  href="/programs/academic-excellence" 
+                  href="/programs" 
                   className="p-3 rounded-xl hover:bg-white/5 block text-white font-heading font-bold border border-transparent hover:border-white/5 transition-all"
                 >
                   <span className="block text-[10px] font-mono text-zinc-500 mb-0.5 tracking-widest uppercase">GRADES 1–12 • CBSE / STATE</span>
@@ -115,12 +116,13 @@ export default function Navbar() {
             
             {mobileDropdownOpen && (
               <div className="mt-3 pl-4 grid gap-2 border-l border-white/10 ml-1">
+                {/* ALIGNED TO TARGET /PROGRAMS DIRECTLY WITHIN THE ACCORDION */}
                 <Link 
-                  href="/programs/academic-excellence" 
+                  href="/programs" 
                   onClick={() => setMobileMenuOpen(false)}
                   className="py-2 block text-white font-bold text-sm"
                 >
-                  Academic Excellence <span className="text-[9px] font-mono text-zinc-400 bg-white/5 px-1.5 py-0.5 rounded ml-1">K-12 Tuition</span>
+                  Academic Excellence <span className="text-[9px] font-mono text-zinc-400 bg-white/5 px-1.5 py-0.5 rounded ml-1">K-12 Journey</span>
                 </Link>
                 <Link 
                   href="/programs/jee" 
