@@ -29,6 +29,13 @@ export default function ClassSixLanding() {
   const [phone, setPhone] = useState("")
   const [loading, setLoading] = useState(false)
   const [submitSuccess, setSubmitSuccess] = useState(false)
+  
+  // Dedicated Modal States for direct pricing leads
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [modalParentName, setModalParentName] = useState("")
+  const [modalPhone, setModalPhone] = useState("")
+  const [modalLoading, setModalLoading] = useState(false)
+  const [modalSuccess, setModalSuccess] = useState(false)
 
   const pricingData = {
     online: [
@@ -48,6 +55,7 @@ export default function ClassSixLanding() {
 
   const rawPath = typeof window !== "undefined" ? window.location.pathname : "/programs/class-6"
 
+  // Handler for Top Hero Intake Form
   const handlePipelineSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!phone.trim()) return
@@ -64,7 +72,7 @@ export default function ClassSixLanding() {
         subjectsRequired: `${currentPlanDetails?.subjects} (${currentPlanDetails?.classes})`,
         learningMode: activeMode === 'online' ? 'Class 6 Online Tuition' : 'Class 6 Home Tuition',
         academicGoals: `Selected Plan: ${selectedPlan} (${currentPlanDetails?.fee}/month)`,
-        sourcePage: `${rawPath} [Mobile Optimized Funnel]`,
+        sourcePage: `${rawPath} [Hero Intake]`,
       }
 
       await submitContactPageForm(payloadData)
@@ -86,6 +94,46 @@ export default function ClassSixLanding() {
     }
   }
 
+  // Handler for Dedicated Inline Package Form Modal
+  const handleModalPipelineSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!modalPhone.trim()) return
+
+    try {
+      setModalLoading(true)
+      const currentPlanDetails = pricingData[activeMode].find(p => p.plan === selectedPlan)
+
+      const payloadData = {
+        parentName: modalParentName.trim() || "Class 6 Pricing Lead",
+        phone: modalPhone.trim(),
+        studentName: "Not Provided (Class VI Direct Select Funnel)",
+        studentClass: "Class 6",
+        subjectsRequired: `${currentPlanDetails?.subjects} (${currentPlanDetails?.classes})`,
+        learningMode: activeMode === 'online' ? 'Class 6 Online Tuition' : 'Class 6 Home Tuition',
+        academicGoals: `Direct Selection: ${selectedPlan} (${currentPlanDetails?.fee}/month)`,
+        sourcePage: `${rawPath} [Direct Grid Capture]`,
+      }
+
+      await submitContactPageForm(payloadData)
+      await sendEmailNotification({
+        formType: "Class 6 Package Explicit Selection Intent",
+        ...payloadData
+      })
+
+      setModalSuccess(true)
+      setTimeout(() => {
+        setModalSuccess(false)
+        setIsModalOpen(false)
+        setModalParentName("")
+        setModalPhone("")
+      }, 3500)
+    } catch (err) {
+      console.error(err)
+    } finally {
+      setModalLoading(false)
+    }
+  }
+
   return (
     <main className="min-h-screen bg-black text-white overflow-x-hidden flex flex-col justify-between font-sans subpixel-antialiased selection:bg-orange-500/30">
       <Navbar />
@@ -99,7 +147,7 @@ export default function ClassSixLanding() {
           className="lg:col-span-7 space-y-8 text-left"
         >
           <motion.span variants={fadeInUpVariant} className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-orange-500/30 bg-orange-500/5 text-xs font-mono font-bold tracking-widest text-orange-400 uppercase">
-            <Sparkles size={12} className="text-orange-400 animate-pulse" /> UNLOCK YOUR CHILD'S TRUE POTENTIAL
+            <Sparkles size={12} className="text-orange-400 animate-pulse" /> UPED ACADEMIC EXCELLENCE PROGRAM
           </motion.span>
           
           <motion.h1 variants={fadeInUpVariant} className="text-4xl sm:text-6xl lg:text-7xl font-black leading-[1.1] tracking-[-0.04em]">
@@ -224,7 +272,7 @@ export default function ClassSixLanding() {
           <p className="text-xs sm:text-sm text-zinc-400 font-normal mt-1">A tutor can help your child complete lessons. UpEd goes far beyond tutoring.</p>
         </div>
 
-        {/* SCROLL-FREE COMPARISON GRID — WORKS PERFECTLY ON MOBILE */}
+        {/* SCROLL-FREE STRATEGIC COMPARISON TRACKS */}
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {[
             { 
@@ -260,51 +308,38 @@ export default function ClassSixLanding() {
           ].map((item, index) => (
             <div 
               key={index} 
-              className="flex flex-col justify-between border border-white/10 bg-zinc-950 rounded-2xl p-5 space-y-4 shadow-xl relative"
+              className="flex flex-col justify-between border border-white/10 bg-zinc-950 rounded-2xl p-5 space-y-4 shadow-xl"
             >
-              {/* FEATURE BADGE TITLE */}
               <div>
-                <span className="text-[10px] font-mono tracking-widest uppercase text-zinc-500 font-bold block mb-1">Feature Scope</span>
+                <span className="text-[10px] font-mono tracking-widest uppercase text-orange-400 font-bold block mb-1">Focus Parameter</span>
                 <h4 className="text-sm font-black text-white font-sans">{item.title}</h4>
               </div>
 
-              {/* LOCAL TUTOR: COMPRESSED & RED ACCENTED DIM TRACK */}
-              <div className="p-3 bg-red-500/[0.02] border border-red-500/10 rounded-xl opacity-40 grayscale contrast-75 transition-opacity hover:opacity-60">
+              {/* LOCAL TUTOR RISK */}
+              <div className="p-3 bg-red-950/20 border border-red-500/30 rounded-xl">
                 <div className="flex items-center gap-1.5 text-[10px] font-bold text-red-500 font-mono uppercase tracking-wide">
-                  <XCircle size={12} /> Local Tutor Risk
+                  <XCircle size={12} className="text-red-500" /> Local Tutor Risk
                 </div>
-                <p className="text-xs text-zinc-500 mt-1 font-normal leading-normal">{item.local}</p>
+                <p className="text-xs text-red-200/70 mt-1 font-normal leading-normal">{item.local}</p>
               </div>
 
-              {/* UPED TIER: EXTRA BRIGHT NEON NEON ORANGE GLOW CONTAINER */}
-              <div className="p-4 bg-orange-500/[0.03] border border-orange-500/30 rounded-xl relative shadow-[0_0_15px_rgba(249,115,22,0.05)]">
-                <div className="absolute inset-0 rounded-xl bg-orange-500/[0.01] blur-md pointer-events-none" />
+              {/* UPED ADVANTAGE */}
+              <div className="p-5 bg-orange-500/[0.04] border-2 border-orange-500 rounded-xl relative shadow-[0_0_20px_rgba(249,115,22,0.15)] scale-[1.02] transform transition-transform">
+                <div className="absolute inset-0 rounded-xl bg-orange-500/[0.02] blur-xl pointer-events-none" />
                 
                 <div className="relative z-10 space-y-1">
                   <div className="flex items-center gap-1.5 text-[10px] font-bold text-orange-400 font-mono uppercase tracking-wide">
                     <CheckCircle2 size={12} className="text-orange-500" /> UpEd Advantage
                   </div>
-                  <p className="text-xs sm:text-sm text-orange-200 font-medium leading-relaxed">{item.uped}</p>
+                  <p className="text-xs sm:text-sm text-orange-100 font-bold leading-relaxed">{item.uped}</p>
                 </div>
               </div>
             </div>
           ))}
         </div>
-
-        <div className="mt-12 rounded-[24px] border border-white/5 bg-zinc-900/30 p-6 sm:p-8 grid gap-6 md:grid-cols-12 items-center text-left">
-          <div className="md:col-span-5 space-y-1">
-            <span className="text-[10px] font-mono text-orange-400 tracking-wider uppercase font-bold">HELPING EVERY STUDENT REACH POTENTIAL</span>
-            <h4 className="text-lg sm:text-xl font-black tracking-tight text-white font-sans">Our goal is simple: Help your child learn better, score better, and become more confident every day.</h4>
-          </div>
-          <div className="md:col-span-7">
-            <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed font-normal">
-              We provide personalized learning plans, regular assessments, progress tracking, and dedicated academic support. Whether you choose an online tutor or an in-home mentor, our system guarantees continuous quality standards to protect your child's classroom scores.
-            </p>
-          </div>
-        </div>
       </section>
 
-      {/* SECTION 3: HOW IT WORKS CHRONOLOGICAL JOURNEY (MAPPED WITH VIBRANT NATIVE MEDIA IMAGES) */}
+      {/* SECTION 3: HOW IT WORKS CHRONOLOGICAL JOURNEY */}
       <section className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 border-t border-white/5 bg-gradient-to-b from-white/[0.01] to-transparent">
         <div className="max-w-2xl mb-16 text-left">
           <p className="text-orange-400 text-xs font-mono font-bold tracking-widest uppercase">THE SYSTEM IN ACTION</p>
@@ -338,7 +373,7 @@ export default function ClassSixLanding() {
         </div>
       </section>
 
-      {/* SECTION 4: TUITION FEE GRIDS WITH HIGH AFFORDABILITY CLASS PRICE METRICS */}
+      {/* SECTION 4: TUITION FEE GRIDS (CAPTURES LEAD LOCALLY VIA INLINE MODAL WINDOW) */}
       <section className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 border-t border-white/5">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-12">
           <div className="text-left space-y-1">
@@ -357,7 +392,7 @@ export default function ClassSixLanding() {
             {pricingData[activeMode].map((item) => (
               <motion.div 
                 layout initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }}
-                key={item.plan} className={`rounded-2xl border p-6 flex flex-col justify-between gap-8 ${item.popular ? 'border-orange-500 bg-orange-500/[0.02] shadow-xl' : 'border-white/10 bg-zinc-900/10'}`}
+                key={item.plan} className={`rounded-2xl border p-6 flex flex-col justify-between gap-8 relative transition-colors duration-300 ${item.popular ? 'border-orange-500 bg-orange-500/[0.02] shadow-xl' : 'border-white/10 bg-zinc-900/10'}`}
               >
                 <div className="space-y-4">
                   <div className="space-y-1">
@@ -376,10 +411,14 @@ export default function ClassSixLanding() {
                 <div className="pt-4 border-t border-white/5 flex items-end justify-between gap-4">
                   <div>
                     <span className="text-[10px] font-mono uppercase text-zinc-500 block font-bold">Monthly Fee</span>
-                    <p className="text-3xl font-black text-white mt-0.5 tracking-tight">{item.fee}</p>
+                    <p className="text-2xl sm:text-3xl font-black text-white mt-0.5 tracking-tight">{item.fee}</p>
                   </div>
                   <button 
-                    onClick={() => { setSelectedPlan(item.plan); window.scrollTo({ top: 0, behavior: "smooth" }) }}
+                    type="button"
+                    onClick={() => { 
+                      setSelectedPlan(item.plan)
+                      setIsModalOpen(true) 
+                    }}
                     className="h-10 px-4 rounded-xl bg-white text-black font-extrabold text-xs uppercase tracking-wider hover:bg-zinc-200 transition-all flex items-center gap-1 flex-shrink-0"
                   >
                     Select Plan <ArrowRight size={12} />
@@ -400,7 +439,7 @@ export default function ClassSixLanding() {
         
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 text-left items-stretch">
           {[
-            { icon: Users, title: "One-to-One Tuition Focus", desc: "No crowd pacing blocks. Attention remains locked entirely on your child's active understanding speed." },
+            { icon: Users, title: "One-to-One Tuition Focus", desc: "No crowd pacing roadblocks. Attention remains locked entirely on your child's active understanding speed." },
             { icon: Compass, title: "Homework & Assignment Support", desc: "Daily school challenges, equations, and textbook tasks are broken down step-by-step by our tutors." },
             { icon: Award, title: "Regular Assessment Syncs", desc: "Periodic diagnostic check-ins to dissolve historical friction paths and clear way for upcoming school exams." },
             { icon: Laptop, title: "Parent Progress Reports", desc: "Absolute clarity. Regular data updates ensure you stay aligned with active score acceleration tracks." },
@@ -418,7 +457,7 @@ export default function ClassSixLanding() {
         </div>
       </section>
 
-      {/* SECTION 6: STUDENT PROGRESS EVOLUTION LOOP VISUALS */}
+      {/* SECTION 6: STUDENT PROGRESS LOOP */}
       <section className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 border-t border-white/5">
         <div className="bg-[#0A0A0A] rounded-[24px] sm:rounded-[32px] border border-white/10 p-6 sm:p-10 text-center space-y-12 shadow-2xl">
           <h4 className="text-2xl sm:text-3xl font-black text-center">Watch Your Child's Concept Mastery Accelerate</h4>
@@ -469,7 +508,7 @@ export default function ClassSixLanding() {
         </div>
       </section>
 
-      {/* SECTION 8: VALUE PSYCHOLOGY VALUE FRAMING */}
+      {/* SECTION 8: VALUE REFRAMING MATRICES */}
       <section className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 bg-zinc-900/[0.08] border-t border-white/5 text-left mb-4 sm:rounded-3xl border sm:border-white/10 sm:p-8">
         <div className="grid gap-6 md:grid-cols-12 items-center">
           <div className="md:col-span-5 flex items-start gap-3">
@@ -484,23 +523,85 @@ export default function ClassSixLanding() {
           
           <div className="md:col-span-7 grid gap-3 grid-cols-3 text-center text-xs font-medium font-mono">
             <div className="p-3 sm:p-4 border border-white/5 bg-black/40 rounded-xl flex flex-col justify-center shadow-inner">
-              <span className="text-zinc-500 text-[9px] sm:text-[10px] uppercase block font-bold leading-tight">Daily Micro-Investment</span>
+              <span className="text-zinc-500 text-[9px] sm:text-[10px] uppercase block leading-tight">Daily Micro-Investment</span>
               <p className="text-orange-400 font-black text-base sm:text-xl mt-1 tracking-tight">~ ₹170 / Day</p>
               <span className="text-[8px] sm:text-[9px] text-zinc-600 mt-0.5 font-normal font-sans leading-none">Price of an everyday coffee</span>
             </div>
             <div className="p-3 sm:p-4 border border-white/5 bg-black/40 rounded-xl flex flex-col justify-center shadow-inner">
-              <span className="text-zinc-500 text-[9px] sm:text-[10px] uppercase block font-bold leading-tight">Tuition Tier</span>
+              <span className="text-zinc-500 text-[9px] sm:text-[10px] uppercase block leading-tight">Tuition Tier</span>
               <p className="text-white font-bold text-xs sm:text-sm mt-1 uppercase tracking-wider font-sans truncate">One-to-One Track</p>
               <span className="text-[8px] sm:text-[9px] text-zinc-600 mt-0.5 font-normal font-sans leading-none">Concept Support</span>
             </div>
             <div className="p-3 sm:p-4 border border-white/5 bg-black/40 rounded-xl flex flex-col justify-center shadow-inner">
-              <span className="text-zinc-500 text-[9px] sm:text-[10px] uppercase block font-bold leading-tight">Tutor Availability</span>
+              <span className="text-zinc-500 text-[9px] sm:text-[10px] uppercase block leading-tight">Tutor Availability</span>
               <p className="text-white font-bold text-xs sm:text-sm mt-1 uppercase tracking-wider font-sans truncate">Dedicated Expert</p>
               <span className="text-[8px] sm:text-[9px] text-zinc-600 mt-0.5 font-normal font-sans leading-none">Undivided Attention</span>
             </div>
           </div>
         </div>
       </section>
+
+      {/* DEDICATED OVERLAY INLINE POPUP MODAL FOR PRICING TRACK SELECTION */}
+      <AnimatePresence>
+        {isModalOpen && (
+          <motion.div 
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md"
+          >
+            <motion.div 
+              initial={{ scale: 0.95, y: 20 }} animate={{ scale: 1, y: 0 }} exit={{ scale: 0.95, y: 20 }}
+              className="relative w-full max-w-md border border-white/10 bg-zinc-950 p-6 sm:p-8 rounded-[28px] shadow-2xl space-y-6"
+            >
+              {/* Close Window Toggle Trigger */}
+              <button 
+                type="button" onClick={() => setIsModalOpen(false)}
+                className="absolute right-4 top-4 text-zinc-500 hover:text-white transition-colors"
+              >
+                <X size={18} />
+              </button>
+
+              <div className="space-y-1">
+                <span className="text-[10px] font-mono font-bold text-orange-400 uppercase tracking-widest">Plan Locked: {selectedPlan}</span>
+                <h3 className="text-xl font-black tracking-tight text-white">Complete Your Registration</h3>
+                <p className="text-xs text-zinc-500">Provide details to assign your child's personal {activeMode === "online" ? "Online" : "Home"} subject tutor.</p>
+              </div>
+
+              {modalSuccess ? (
+                <div className="py-8 text-center space-y-3">
+                  <div className="mx-auto flex h-10 w-10 items-center justify-center rounded-full bg-orange-500/20 text-orange-500"><ShieldCheck size={22} /></div>
+                  <h4 className="text-sm font-bold text-white">Admissions Request Verified!</h4>
+                  <p className="text-xs text-zinc-400">Our advisor will contact your mobile line within 2 hours.</p>
+                </div>
+              ) : (
+                <form onSubmit={handleModalPipelineSubmit} className="space-y-4">
+                  <div className="space-y-1">
+                    <label className="text-[10px] font-mono uppercase text-zinc-400 font-bold">Parent Name</label>
+                    <input 
+                      type="text" required value={modalParentName} onChange={(e) => setModalParentName(e.target.value)}
+                      placeholder="Enter parent name" className="h-11 w-full rounded-xl border border-white/10 bg-black/40 px-4 text-xs text-white focus:outline-none focus:border-orange-500/60 placeholder-zinc-700" 
+                    />
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="text-[10px] font-mono uppercase text-zinc-400 font-bold">Mobile Number</label>
+                    <input 
+                      type="tel" required value={modalPhone} onChange={(e) => setModalPhone(e.target.value)}
+                      placeholder="WhatsApp Mobile Number *" className="h-11 w-full rounded-xl border border-white/10 bg-black/40 px-4 text-xs text-white focus:outline-none focus:border-orange-500/60 placeholder-zinc-700" 
+                    />
+                  </div>
+
+                  <button 
+                    type="submit" disabled={modalLoading}
+                    className="h-11 w-full rounded-xl bg-orange-500 text-xs font-extrabold uppercase tracking-wider text-black hover:bg-orange-400 transition-all flex items-center justify-center shadow-lg shadow-orange-500/10"
+                  >
+                    {modalLoading ? "Processing Request..." : "Confirm Selected Tuition Plan 🚀"}
+                  </button>
+                </form>
+              )}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <Footer />
     </main>
