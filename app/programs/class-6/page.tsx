@@ -113,14 +113,14 @@ export default function ClassSixLanding() {
             <div className="flex items-start gap-3 bg-white/[0.02] border border-white/5 p-4 rounded-2xl">
               <AlertCircle size={18} className="text-orange-400 flex-shrink-0 mt-0.5" />
               <p className="text-sm text-zinc-300 font-normal leading-relaxed">
-                Class 6 is a critical turning point. Lessons shift quickly from simple facts to deeper, concept-based thinking in <strong className="text-white">Mathematics and Science</strong>.
+                Class 6 is an important stage where students move from basic learning to deeper understanding in <strong className="text-white">Mathematics and Science</strong>. Many students begin to struggle because subjects become more detailed and concept-based.
               </p>
             </div>
 
             <div className="flex items-start gap-3 bg-white/[0.02] border border-white/5 p-4 rounded-2xl">
               <CheckCircle2 size={18} className="text-orange-400 flex-shrink-0 mt-0.5" />
               <p className="text-sm text-zinc-300 font-normal leading-relaxed">
-                Our personalized <strong className="text-white">one-to-one tuition</strong> gives your child patient, undivided attention to master tough topics, clear homework stress, and perform beautifully at school.
+                At UpEd, every student receives personalized <strong className="text-white">one-to-one tuition</strong> designed to strengthen concepts, improve school performance, and build confidence for future academic success.
               </p>
             </div>
           </motion.div>
@@ -224,28 +224,68 @@ export default function ClassSixLanding() {
           <p className="text-xs sm:text-sm text-zinc-400 font-normal mt-1">A tutor can help your child complete lessons. UpEd goes far beyond tutoring.</p>
         </div>
 
-        {/* FULLY RESPONSIVE SCROLL-FREE CARD LAYOUT FOR SCREEN WIDTH READABILITY */}
-        <div className="grid gap-4 w-full">
+        {/* SCROLL-FREE COMPARISON GRID — WORKS PERFECTLY ON MOBILE */}
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {[
-            { title: "One-to-One Personalized Learning Focus", local: "Crowded batches where quiet children get hidden", uped: "100% individual attention completely tailored to your child's natural learning speed" },
-            { title: "Tutor Screening & Safety Verification", local: "Unverified neighborhood options with fluctuating quality", uped: "Rigorous background checks and multi-stage subject expert verification" },
-            { title: "Structured Learning Roadmap", local: "Ad-hoc, lesson-by-lesson reactive explanation", uped: "Proactive lesson planning mapped closely with school terminal targets" },
-            { title: "Progress Tracking & Analytics", local: "No clear data feedback or objective milestones", uped: "Deep, diagnostic evaluation logs to stop recurring error paths" },
-            { f: "Regular Assessment Syncs", title: "Continuous Concept Checkpoints", local: "Assessments are rare or highly stressful", uped: "Warm, supportive checks to naturally measure learning growth" },
-            { title: "Detailed Parent Progress Updates", local: "Rarely kept in the loop regarding actual performance", uped: "Regular transparent feedback matrices straight to your mobile" },
-            { title: "Tutor Replacement & Continuous Team Support", local: "Left stranded or forced to search again if a tutor quits", uped: "Dedicated support specialists with immediate backup guarantee" }
+            { 
+              title: "Learning Focus", 
+              local: "Crowded batches where quiet children get hidden and left behind", 
+              uped: "100% undivided attention fully tailored to your child's natural learning speed" 
+            },
+            { 
+              title: "Safety & Verification", 
+              local: "Unverified neighborhood options with fluctuating quality and background checks skipped", 
+              uped: "Rigorous background checks and premium subject expert verification" 
+            },
+            { 
+              title: "Study Pacing", 
+              local: "Forced to rush along with the crowd even when confused", 
+              uped: "Adaptive teaching pacing mapped carefully around your child's comfort boundaries" 
+            },
+            { 
+              title: "Error Tracking", 
+              local: "Mistakes are ignored or penalised, building school anxiety", 
+              uped: "Deep, diagnostic evaluation logs to permanently fix recurring calculation errors" 
+            },
+            { 
+              title: "Parent Visibility", 
+              local: "Parents are kept in the dark regarding actual concept milestones", 
+              uped: "Regular transparent feedback updates sent directly to your phone" 
+            },
+            { 
+              title: "Academic Backup", 
+              local: "Left completely stranded if the home tutor suddenly quits or changes hours", 
+              uped: "Dedicated support team with an immediate, verified backup tutor guarantee" 
+            }
           ].map((item, index) => (
-            <div key={index} className="grid md:grid-cols-12 border border-white/5 bg-zinc-950 rounded-xl overflow-hidden divide-y md:divide-y-0 md:divide-x divide-white/5 shadow-md">
-              <div className="md:col-span-4 p-4 bg-white/[0.01] flex items-center">
-                <h4 className="text-xs sm:text-sm font-extrabold text-white leading-snug">{item.title}</h4>
+            <div 
+              key={index} 
+              className="flex flex-col justify-between border border-white/10 bg-zinc-950 rounded-2xl p-5 space-y-4 shadow-xl relative"
+            >
+              {/* FEATURE BADGE TITLE */}
+              <div>
+                <span className="text-[10px] font-mono tracking-widest uppercase text-zinc-500 font-bold block mb-1">Feature Scope</span>
+                <h4 className="text-sm font-black text-white font-sans">{item.title}</h4>
               </div>
-              <div className="md:col-span-4 p-4 text-zinc-600 opacity-40 bg-red-500/[0.005] flex items-center gap-2">
-                <XCircle size={14} className="text-zinc-700 flex-shrink-0 mt-0.5" />
-                <span className="text-xs font-normal leading-normal">{item.local}</span>
+
+              {/* LOCAL TUTOR: COMPRESSED & RED ACCENTED DIM TRACK */}
+              <div className="p-3 bg-red-500/[0.02] border border-red-500/10 rounded-xl opacity-40 grayscale contrast-75 transition-opacity hover:opacity-60">
+                <div className="flex items-center gap-1.5 text-[10px] font-bold text-red-500 font-mono uppercase tracking-wide">
+                  <XCircle size={12} /> Local Tutor Risk
+                </div>
+                <p className="text-xs text-zinc-500 mt-1 font-normal leading-normal">{item.local}</p>
               </div>
-              <div className="md:col-span-4 p-4 text-orange-400 bg-orange-500/[0.015] border border-orange-500/20 flex items-center gap-2 font-medium">
-                <CheckCircle2 size={14} className="text-orange-400 flex-shrink-0 mt-0.5" />
-                <span className="text-xs sm:text-sm leading-normal">{item.uped}</span>
+
+              {/* UPED TIER: EXTRA BRIGHT NEON NEON ORANGE GLOW CONTAINER */}
+              <div className="p-4 bg-orange-500/[0.03] border border-orange-500/30 rounded-xl relative shadow-[0_0_15px_rgba(249,115,22,0.05)]">
+                <div className="absolute inset-0 rounded-xl bg-orange-500/[0.01] blur-md pointer-events-none" />
+                
+                <div className="relative z-10 space-y-1">
+                  <div className="flex items-center gap-1.5 text-[10px] font-bold text-orange-400 font-mono uppercase tracking-wide">
+                    <CheckCircle2 size={12} className="text-orange-500" /> UpEd Advantage
+                  </div>
+                  <p className="text-xs sm:text-sm text-orange-200 font-medium leading-relaxed">{item.uped}</p>
+                </div>
               </div>
             </div>
           ))}
@@ -254,7 +294,7 @@ export default function ClassSixLanding() {
         <div className="mt-12 rounded-[24px] border border-white/5 bg-zinc-900/30 p-6 sm:p-8 grid gap-6 md:grid-cols-12 items-center text-left">
           <div className="md:col-span-5 space-y-1">
             <span className="text-[10px] font-mono text-orange-400 tracking-wider uppercase font-bold">HELPING EVERY STUDENT REACH POTENTIAL</span>
-            <h4 className="text-lg font-black tracking-tight text-white font-sans">Our goal is simple: Help your child learn better, score better, and become more confident every day.</h4>
+            <h4 className="text-lg sm:text-xl font-black tracking-tight text-white font-sans">Our goal is simple: Help your child learn better, score better, and become more confident every day.</h4>
           </div>
           <div className="md:col-span-7">
             <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed font-normal">
@@ -336,7 +376,7 @@ export default function ClassSixLanding() {
                 <div className="pt-4 border-t border-white/5 flex items-end justify-between gap-4">
                   <div>
                     <span className="text-[10px] font-mono uppercase text-zinc-500 block font-bold">Monthly Fee</span>
-                    <p className="text-2xl sm:text-3xl font-black text-white mt-0.5 tracking-tight">{item.fee}</p>
+                    <p className="text-3xl font-black text-white mt-0.5 tracking-tight">{item.fee}</p>
                   </div>
                   <button 
                     onClick={() => { setSelectedPlan(item.plan); window.scrollTo({ top: 0, behavior: "smooth" }) }}
@@ -360,8 +400,8 @@ export default function ClassSixLanding() {
         
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 text-left items-stretch">
           {[
-            { icon: Users, title: "One-to-One Tuition Focus", desc: "No batch pacing roadblocks. Attention remains locked entirely on your child's active understanding speed." },
-            { icon: Compass, title: "Homework & Assignment Support", desc: "Daily school challenges, equations, and textbook tasks are supportively broken down by our tutors." },
+            { icon: Users, title: "One-to-One Tuition Focus", desc: "No crowd pacing blocks. Attention remains locked entirely on your child's active understanding speed." },
+            { icon: Compass, title: "Homework & Assignment Support", desc: "Daily school challenges, equations, and textbook tasks are broken down step-by-step by our tutors." },
             { icon: Award, title: "Regular Assessment Syncs", desc: "Periodic diagnostic check-ins to dissolve historical friction paths and clear way for upcoming school exams." },
             { icon: Laptop, title: "Parent Progress Reports", desc: "Absolute clarity. Regular data updates ensure you stay aligned with active score acceleration tracks." },
             { icon: Clock, title: "Flexible Scheduling Format", desc: "Classes match naturally with your domestic timeline and alternative weekend sports operations." },
@@ -446,7 +486,7 @@ export default function ClassSixLanding() {
             <div className="p-3 sm:p-4 border border-white/5 bg-black/40 rounded-xl flex flex-col justify-center shadow-inner">
               <span className="text-zinc-500 text-[9px] sm:text-[10px] uppercase block font-bold leading-tight">Daily Micro-Investment</span>
               <p className="text-orange-400 font-black text-base sm:text-xl mt-1 tracking-tight">~ ₹170 / Day</p>
-              <span className="text-[8px] sm:text-[9px] text-zinc-600 mt-0.5 font-normal font-sans leading-none">Price of a daily coffee</span>
+              <span className="text-[8px] sm:text-[9px] text-zinc-600 mt-0.5 font-normal font-sans leading-none">Price of an everyday coffee</span>
             </div>
             <div className="p-3 sm:p-4 border border-white/5 bg-black/40 rounded-xl flex flex-col justify-center shadow-inner">
               <span className="text-zinc-500 text-[9px] sm:text-[10px] uppercase block font-bold leading-tight">Tuition Tier</span>
