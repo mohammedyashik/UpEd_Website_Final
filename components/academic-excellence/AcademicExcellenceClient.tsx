@@ -48,7 +48,9 @@ export default function ClassSixLanding({
   const [activeMode, setActiveMode] = useState<"online" | "home">("online")
   const [selectedPlan, setSelectedPlan] = useState<string>("Growth Plan ⭐")
 
-  const rawPath = typeof window !== "undefined" ? window.location.pathname : "/programs/class-6"
+  const rawPath = typeof window !== "undefined"
+    ? window.location.pathname
+    : `/tuition/${gradeData.className.toLowerCase().replace(' ', '-')}`
 
   const handlePipelineSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -60,18 +62,20 @@ export default function ClassSixLanding({
 
       // Payload strictly matches ClassSixLeadData interface
       const payloadData = {
-        parentName: parentName.trim() || "Class 6 Lead",
+        parentName: parentName.trim() || `${gradeData.className} Lead`,
         phone: phone.trim(),
-        studentClass: "Class 6",
+        studentClass: gradeData.className,
         subjectsRequired: `${currentPlanDetails?.subjects} (${currentPlanDetails?.classes})`,
-        learningMode: activeMode === 'online' ? 'Class 6 Online Tuition' : 'Class 6 Home Tuition',
+        learningMode: activeMode === 'online'
+          ? `${gradeData.className} Online Tuition`
+          : `${gradeData.className} Home Tuition`,
         selectedPlan: selectedPlan, // REQUIRED
         sourcePage: `${rawPath} [Hero Intake]`,
       }
 
       await submitClassSixLead(payloadData)
       await sendEmailNotification({
-        formType: "Class 6 Academic Growth Consultation Request",
+        formType: `${gradeData.className} Academic Growth Consultation Request`,
         parentName: payloadData.parentName,
         phone: payloadData.phone,
         sourcePage: payloadData.sourcePage
@@ -92,18 +96,20 @@ export default function ClassSixLanding({
 
       // Payload strictly matches ClassSixLeadData interface
       const payloadData = {
-        parentName: modalParentName.trim() || "Class 6 Pricing Lead",
+        parentName: modalParentName.trim() || `${gradeData.className} Pricing Lead`,
         phone: modalPhone.trim(),
-        studentClass: "Class 6",
+        studentClass: gradeData.className,
         subjectsRequired: `${currentPlanDetails?.subjects} (${currentPlanDetails?.classes})`,
-        learningMode: activeMode === 'online' ? 'Class 6 Online Tuition' : 'Class 6 Home Tuition',
+        learningMode: activeMode === 'online'
+          ? `${gradeData.className} Online Tuition`
+          : `${gradeData.className} Home Tuition`,
         selectedPlan: selectedPlan, // REQUIRED
         sourcePage: `${rawPath} [Direct Grid Capture]`,
       }
 
       await submitClassSixLead(payloadData)
       await sendEmailNotification({
-        formType: "Class 6 Package Explicit Selection Intent",
+        formType: `${gradeData.className} Package Explicit Selection Intent`,
         parentName: payloadData.parentName,
         phone: payloadData.phone,
         sourcePage: payloadData.sourcePage
