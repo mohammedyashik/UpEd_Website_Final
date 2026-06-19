@@ -7,8 +7,6 @@ import {
   BookOpen, Clock, Laptop, Home, ChevronDown, Star, AlertCircle,
   Sparkles, Shield, Compass, Users, Award, Zap, XCircle
 } from "lucide-react"
-import Navbar from "@/components/shared/Navbar"
-import Footer from "@/components/shared/Footer"
 // Firebase pipeline
 import { submitClassSixLead } from "@/services/leads" 
 import { sendEmailNotification } from "@/services/notify" // Matches your actual file path
@@ -118,7 +116,6 @@ export default function ClassSixLanding({
 
   return (
     <main className="min-h-screen bg-black text-white overflow-x-hidden flex flex-col justify-between font-sans subpixel-antialiased selection:bg-orange-500/30">
-      <Navbar />
 
       {/* SECTION 1: HERO & TRUST ENGINE */}
       <section className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-16 w-full grid gap-12 lg:grid-cols-12 items-center min-h-[85vh]">
@@ -586,7 +583,6 @@ export default function ClassSixLanding({
         )}
       </AnimatePresence>
 
-      <Footer />
     </main>
   )
 }
