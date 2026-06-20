@@ -1,8 +1,8 @@
-import { db } from "@/lib/firebase"; // Root alias configuration path
+import { db } from "@/lib/firebase"; 
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 
 // =========================================================================
-// TYPE INTERFACE DEFINITIONS FOR PIPELINE VALIDATION
+// TYPE INTERFACE DEFINITIONS
 // =========================================================================
 
 export interface HomepageLeadData {
@@ -31,92 +31,20 @@ export interface AssessmentLeadData {
 }
 
 export interface CandidateLeadData {
-  parentName: string; // Candidate Full Name
-  phone: string;      // WhatsApp Number
-  email: string;      // Email ID
+  parentName: string;
+  phone: string;
+  email: string;
   applicationType: "Specific Opening" | "General Interest";
-  position?: string;   // Dropdown option (if opening)
-  employmentType?: string; // Full-Time / Part-Time
-  subjectsComfortable?: string; // Subject taken (if general)
-  classesComfortable?: string;  // Classes comfortable teaching
-  experience: string; // Years of experience
-  targetBoards?: string; // Preferred Boards
-  currentCity?: string;  // Current Location/City
-  resumeLink: string; // Shared Cloud Storage link
+  position?: string;
+  employmentType?: string;
+  subjectsComfortable?: string;
+  classesComfortable?: string;
+  experience: string;
+  targetBoards?: string;
+  currentCity?: string;
+  resumeLink: string;
   sourcePage: string;
 }
-
-// =========================================================================
-// 1. HOMEPAGE LEADS COLLECTION INTERFACE (Handles Main CTA Forms)
-// =========================================================================
-export async function submitHomepageAssessment(data: HomepageLeadData) {
-  try {
-    const targetCollection = collection(db, "homepage_leads");
-    const docRef = await addDoc(targetCollection, {
-      ...data,
-      timestamp: serverTimestamp(),
-    });
-    return { success: true, id: docRef.id };
-  } catch (error) {
-    console.error("Firestore homepage leads log insertion error:", error);
-    throw error;
-  }
-}
-
-// =========================================================================
-// 2. PROGRAM PAGES LEADS COLLECTION INTERFACE (Handles Step-by-Step Funnel)
-// =========================================================================
-export async function submitProgramPageAssessment(data: ProgramLeadData) {
-  try {
-    const targetCollection = collection(db, "program_leads");
-    const docRef = await addDoc(targetCollection, {
-      ...data,
-      timestamp: serverTimestamp(),
-    });
-    return { success: true, id: docRef.id };
-  } catch (error) {
-    console.error("Firestore program leads log insertion error:", error);
-    throw error;
-  }
-}
-
-// =========================================================================
-// 3. ASSESSMENT LEADS COLLECTION INTERFACE (Handles How It Works Bookings)
-// =========================================================================
-export async function submitAssessmentRequest(data: AssessmentLeadData) {
-  try {
-    const targetCollection = collection(db, "assessment_leads");
-    const docRef = await addDoc(targetCollection, {
-      ...data,
-      timestamp: serverTimestamp(),
-    });
-    return { success: true, id: docRef.id };
-  } catch (error) {
-    console.error("Firestore assessment leads logging exception:", error);
-    throw error;
-  }
-}
-
-// =========================================================================
-// 4. CANDIDATE LEADS COLLECTION INTERFACE (Handles Careers Applications)
-// =========================================================================
-export async function submitCandidateApplication(data: CandidateLeadData) {
-  try {
-    const targetCollection = collection(db, "candidate_leads");
-    const docRef = await addDoc(targetCollection, {
-      ...data,
-      timestamp: serverTimestamp(),
-    });
-    return { success: true, id: docRef.id };
-  } catch (error) {
-    console.error("Firestore candidate database insertion error:", error);
-    throw error;
-  }
-}
-
-// =========================================================================
-// 5. CONTACT PAGE LEADS COLLECTION INTERFACE (Handles Contact Form Submissions)
-// =========================================================================
 
 export interface ContactPageLeadData {
   parentName: string;
@@ -129,44 +57,86 @@ export interface ContactPageLeadData {
   sourcePage: string;
 }
 
-export async function submitContactPageForm(data: ContactPageLeadData) {
+// =========================================================================
+// DYNAMIC COLLECTION ROUTER (Use this for all Grade Level Leads)
+// =========================================================================
+
+/**
+ * Dynamically routes leads to the correct collection based on the student's class.
+ * E.g., "Class 6" -> "class-6-leads", "Class 4" -> "class-4-leads"
+ */
+export async function submitGradeLead(data: any) {
   try {
-    const targetCollection = collection(db, "contact_leads");
+    // Converts "Class 6" to "class-6-leads"
+    const collectionName = `${data.studentClass.toLowerCase().replace(' ', '-')}-leads`;
+    const targetCollection = collection(db, collectionName);
+    
     const docRef = await addDoc(targetCollection, {
       ...data,
       timestamp: serverTimestamp(),
     });
     return { success: true, id: docRef.id };
   } catch (error) {
-    console.error("Firestore contact page database logging exception:", error);
+    console.error("Firestore dynamic grade lead insertion error:", error);
     throw error;
   }
 }
 
-// Add this interface to your service file
-export interface ClassSixLeadData {
+// =========================================================================
+// EXISTING STATIC COLLECTIONS
+// =========================================================================
+
+export async function submitHomepageAssessment(data: HomepageLeadData) {
+  const docRef = await addDoc(collection(db, "homepage_leads"), { ...data, timestamp: serverTimestamp() });
+  return { success: true, id: docRef.id };
+}
+
+export async function submitProgramPageAssessment(data: ProgramLeadData) {
+  const docRef = await addDoc(collection(db, "program_leads"), { ...data, timestamp: serverTimestamp() });
+  return { success: true, id: docRef.id };
+}
+
+export async function submitAssessmentRequest(data: AssessmentLeadData) {
+  const docRef = await addDoc(collection(db, "assessment_leads"), { ...data, timestamp: serverTimestamp() });
+  return { success: true, id: docRef.id };
+}
+
+export async function submitCandidateApplication(data: CandidateLeadData) {
+  const docRef = await addDoc(collection(db, "candidate_leads"), { ...data, timestamp: serverTimestamp() });
+  return { success: true, id: docRef.id };
+}
+
+export async function submitContactPageForm(data: ContactPageLeadData) {
+  const docRef = await addDoc(collection(db, "contact_leads"), { ...data, timestamp: serverTimestamp() });
+  return { success: true, id: docRef.id };
+}
+
+export interface AcademicExcellenceLeadData {
   parentName: string;
   phone: string;
-  studentName?: string; // Added to match payload
   studentClass: string;
-  subjectsRequired?: string;
+  subjectsRequired: string;
+  classesPerMonth?: string;
+  monthlyFee?: string;
   learningMode: string;
-  academicGoals?: string; // Added to match payload
   selectedPlan: string;
   sourcePage: string;
 }
 
-// Add this function to your service file
-export async function submitClassSixLead(data: ClassSixLeadData) {
+export async function submitAcademicExcellenceLead(
+  data: AcademicExcellenceLeadData
+) {
   try {
-    const targetCollection = collection(db, "class-6-leads");
+    const targetCollection = collection(db, "academic-excellence-leads");
+
     const docRef = await addDoc(targetCollection, {
       ...data,
       timestamp: serverTimestamp(),
     });
+
     return { success: true, id: docRef.id };
   } catch (error) {
-    console.error("Firestore class-6-leads insertion error:", error);
+    console.error("Firestore academic excellence insertion error:", error);
     throw error;
   }
 }
